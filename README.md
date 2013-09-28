@@ -1,5 +1,4 @@
-vON
-===
+# vON
 
 vON is a [serialization](http://s.vercas.com/definitionserialization) library for Lua, turning tables into strings and the other way around.
 
@@ -9,8 +8,11 @@ Initially, I made it as an alternative to GLON (**G**arry’s Mod **L**ua **O**b
 
 The main target of vON is flexibility and speed.
 
-Specifications
-==
+## License
+
+The license is specified in each code file. The terms of usage are pretty simple. Just read them.
+
+## Specifications
 
 As in Lua, the main data structure is the table. But, unlike Lua tables, they are visibly separated in two parts: the numeric (array) component and the key-value pairs (dictionary) component.
 Tables start with *{* and end with *}*, and the two components are separated by a *~* (tilda) character, which may be absent if the table is a pure array.
@@ -34,27 +36,28 @@ Strings start and being with double quotes (*“*). Quotes inside strings are es
 A **v** is added at the end of every string to make sure the string doesn’t end in a \ (which would break the deserializer).
 That’s *1* more character per string, but it whould be a fair sacrifice considering the speeds at which it deserializes strings. (especially strings of kilobytes in size!)
 
-Example
-==
+## Example
 
+```lua
+{
+    1, -1337, -99.99, 2, 3, 100, 101, 121, 143, 144, "ma\"ra", "are", "mere",
     {
-        1, -1337, -99.99, 2, 3, 100, 101, 121, 143, 144, "ma\"ra", "are", "mere",
-        {
-            500,600,700,800,900,9001,
-            TROLOLOLOLOLOOOO = 666,
-            [true] = false,
-            [false] = "lol?",
-            pere = true,
-            [1997] = "vasile",
-            [{ [true] = false, [false] = true }] = { [true] = "true", ["false"] = false }
-        },
-        true, false, false, true, false, true, true, false, true,
-        [1337] = 1338,
-        mara = "are",
-        mere = false,
+        500,600,700,800,900,9001,
+        TROLOLOLOLOLOOOO = 666,
         [true] = false,
+        [false] = "lol?",
+        pere = true,
+        [1997] = "vasile",
         [{ [true] = false, [false] = true }] = { [true] = "true", ["false"] = false }
-    }
+    },
+    true, false, false, true, false, true, true, false, true,
+    [1337] = 1338,
+    mara = "are",
+    mere = false,
+    [true] = false,
+    [{ [true] = false, [false] = true }] = { [true] = "true", ["false"] = false }
+}
+```
 
 … becomes …
 
