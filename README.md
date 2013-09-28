@@ -4,7 +4,7 @@ vON is a [serialization](http://s.vercas.com/definitionserialization) library fo
 
 The purpose of vON is to facilitate persistent storage of Lua data as strings (in a file, in a database, etc.).
 
-Initially, I made it as an alternative to GLON (**G**arry’s Mod **L**ua **O**bject **N**otation), which was slow, the code was terrible, it used unprintable characters (which aren’t ideal for absolutely everything), and it was eventually removed from the game.
+Initially, I made it as an alternative to GLON ( **G**arry’s Mod **L**ua **O**bject **N**otation ), which was slow, the code was terrible, it used unprintable characters (which aren’t ideal for absolutely everything), and it was eventually removed from the game.
 
 The main target of vON is flexibility and speed.
 
