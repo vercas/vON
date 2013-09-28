@@ -1,4 +1,4 @@
---[[	vON 1.1.1
+--[[	vON 1.1.2
 
 	Copyright 2012-2013 Alexandru-Mihai Maftei
 					aka Vercas
@@ -31,6 +31,8 @@
 		-	pennerlord					Provided some performance tests to help me improve the code.
 		-	Chessnut					Reported bug with handling of nil values when deserializing array components.
 
+		-	People who contributed on the GitHub repository by reporting bugs, posting fixes, etc.
+
 -----------------------------------------------------------------------------------------------------------------------------
 	
 	The value types supported in this release of vON are:
@@ -45,7 +47,7 @@
 -----------------------------------------------------------------------------------------------------------------------------
 	
 	New in this version:
-		-	Fixed problem with handling of nils in array tables.
+		-	Added proper error in case of attempting to serialize an unsupported type.
 --]]
 
 local _deserialize, _serialize, _d_meta, _s_meta, d_findVariable, s_anyVariable
@@ -120,9 +122,13 @@ function s_anyVariable(data, lastType, isNumeric, isKey, isLast, nice, indent)
 		--	Remember the new type. Caching the type is useless.
 		lastType = type(data)
 
-		--	Return the serialized data and the (new) last type.
-		--	The second argument, which is true now, means that the data type was just changed.
-		return _serialize[lastType](data, true, isNumeric, isKey, isLast, nice, indent), lastType
+		if _serialize[lastType] then
+			--	Return the serialized data and the (new) last type.
+			--	The second argument, which is true now, means that the data type was just changed.
+			return _serialize[lastType](data, true, isNumeric, isKey, isLast, nice, indent), lastType
+		else
+			error("vON: No serializer defined for type \"" .. lastType .. "\"!")
+		end
 	end
 
 	--	Otherwise, simply serialize the data.

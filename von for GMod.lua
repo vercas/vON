@@ -1,4 +1,4 @@
---[[	vON 1.1.1
+--[[	vON 1.1.2
 
 	Copyright 2012-2013 Alexandru-Mihai Maftei
 					aka Vercas
@@ -31,6 +31,8 @@
 		-	pennerlord					Provided some performance tests to help me improve the code.
 		-	Chessnut					Reported bug with handling of nil values when deserializing array components.
 
+		-	People who contributed on the GitHub repository by reporting bugs, posting fixes, etc.
+
 -----------------------------------------------------------------------------------------------------------------------------
 	
 	The value types supported in this release of vON are:
@@ -39,10 +41,15 @@
 		-	boolean
 		-	string
 		-	nil
-		-	Entity
-		-	Player
 		-	Vector
 		-	Angle
+		-	Entities:
+			-	Entity
+			-	Vehicle
+			-	Weapon
+			-	NPC
+			-	Player
+			-	NextBot
 
 	These are the native Lua types one would normally serialize.
 	+ Some very common GMod Lua types.
@@ -50,8 +57,11 @@
 -----------------------------------------------------------------------------------------------------------------------------
 	
 	New in this version:
-		-	Fixed problem with handling of nils in array tables.
+		-	Added ability to serialize more entity types.
+		-	Added proper error in case of attempting to serialize an unsupported type.
 --]]
+
+local extraEntityTypes = { "Vehicle", "Weapon", "NPC", "Player", "NextBot" }
 
 local _deserialize, _serialize, _d_meta, _s_meta, d_findVariable, s_anyVariable
 local sub, gsub, find, insert, concat, error, tonumber, tostring, type, next, getEnt, getPly = string.sub, string.gsub, string.find, table.insert, table.concat, error, tonumber, tostring, type, next, Entity, player.GetByID
@@ -101,22 +111,38 @@ function d_findVariable(s, i, len, lastType)
 			lastType = "table"
 			typeRead = true
 
-		--	n means a number will follow. Base 10... :C
+		--	e means an entity ID will follow.
 		elseif c == "e" then
 			lastType = "Entity"
 			typeRead = true
-
-		--	n means a number will follow. Base 10... :C
-		elseif c == "p" then
-			lastType = "Player"
+--[[
+		--	c means a vehicle ID will follow.
+		elseif c == "c" then
+			lastType = "Vehicle"
 			typeRead = true
 
-		--	n means a number will follow. Base 10... :C
+		--	w means a weapon entity ID will follow.
+		elseif c == "w" then
+			lastType = "Weapon"
+			typeRead = true
+
+		--	x means a NPC ID will follow.
+		elseif c == "x" then
+			lastType = "NPC"
+			typeRead = true
+--]]
+		--	p means a player ID will follow.
+		--	Kept for backwards compatibility.
+		elseif c == "p" then
+			lastType = "Entity"
+			typeRead = true
+
+		--	v means a vector will follow. 3 numbers.
 		elseif c == "v" then
 			lastType = "Vector"
 			typeRead = true
 
-		--	n means a number will follow. Base 10... :C
+		--	a means an Euler angle will follow. 3 numbers.
 		elseif c == "a" then
 			lastType = "Angle"
 			typeRead = true
@@ -145,9 +171,13 @@ function s_anyVariable(data, lastType, isNumeric, isKey, isLast, nice, indent)
 		--	Remember the new type. Caching the type is useless.
 		lastType = type(data)
 
-		--	Return the serialized data and the (new) last type.
-		--	The second argument, which is true now, means that the data type was just changed.
-		return _serialize[lastType](data, true, isNumeric, isKey, isLast, nice, indent), lastType
+		if _serialize[lastType] then
+			--	Return the serialized data and the (new) last type.
+			--	The second argument, which is true now, means that the data type was just changed.
+			return _serialize[lastType](data, true, isNumeric, isKey, isLast, nice, indent), lastType
+		else
+			error("vON: No serializer defined for type \"" .. lastType .. "\"!")
+		end
 	end
 
 	--	Otherwise, simply serialize the data.
@@ -310,21 +340,6 @@ _deserialize = {
 		end
 
 		error("vON: Entity ID definition started... Found no end.")
-	end,
-
-
---	Exactly like a entity definition, except it begins with "p".
-	["Player"] = function(s, i, len)
-		local i, a = i or 1
-		--	Locals, locals, locals, locals
-
-		a = find(s, "[;:}~]", i)
-
-		if a then
-			return getEnt(tonumber(sub(s, i, a - 1))), a - 1
-		end
-
-		error("vON: Player ID definition started... Found no end.")
 	end,
 
 
@@ -530,26 +545,6 @@ _serialize = {
 	end,
 
 
---	Same as entities, except they start with "e" instead of "n".
-	["Player"] = function(data, mustInitiate, isNumeric, isKey, isLast)
-		data = data:EntIndex()
-
-		if mustInitiate then
-			if isKey or isLast then
-				return "p"..data
-			else
-				return "p"..data..";"
-			end
-		end
-
-		if isKey or isLast then
-			return "p"..data
-		else
-			return "p"..data..";"
-		end
-	end,
-
-
 --	3 numbers separated by a comma.
 	["Vector"] = function(data, mustInitiate, isNumeric, isKey, isLast)
 		if mustInitiate then
@@ -585,6 +580,10 @@ _serialize = {
 		end
 	end
 }
+
+for i = 1, #extraEntityTypes do
+	_serialize[extraEntityTypes[i]] = _serialize.Entity
+end
 
 local _s_table = _serialize.table
 local _d_table = _deserialize.table
