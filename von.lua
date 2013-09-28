@@ -3,15 +3,19 @@
 	Copyright 2012-2013 Alexandru-Mihai Maftei
 					aka Vercas
 
+	GitHub Repository:
+		https://github.com/vercas/vON
+
 	You may use this for any purpose as long as:
 	-	You don't remove this copyright notice.
 	-	You don't claim this to be your own.
 	-	You properly credit the author (Vercas) if you publish your work based on (and/or using) this.
 
 	If you modify the code for any purpose, the above obligations still apply.
+	If you make any interesting modifications, try forking the GitHub repository instead.
 
 	Instead of copying this code over for sharing, rather use the link:
-		https://dl.dropbox.com/u/1217587/GMod/Lua/von.lua
+		https://github.com/vercas/vON/blob/master/von.lua
 
 	The author may not be held responsible for any damage or losses directly or indirectly caused by
 	the use of vON.
