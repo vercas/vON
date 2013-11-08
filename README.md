@@ -61,6 +61,6 @@ That’s *1* more character per string, but it whould be a fair sacrifice consid
 
 … becomes …
 
-    n1;-1337;-99.99;2;3;100;101;121;143;144;"ma\"ra""are""mere"{n500;600;700;800;900;9001~"TROLOLOLOLOLOOOO":n666;b1:0{~b0:11:0}:{~b1:"true""false":b0}"pere":b1n1997:"vasile"b0:"lol?"}b100101101~1:0{~b0:11:0}:{~b1:"true""false":b0}n1337:1338;"mara":"are""mere":b0
+    n1;-1337;-99.99;2;3;100;101;121;143;144;"ma\"rav""arev""merev"{n500;600;700;800;900;9001~"TROLOLOLOLOLOOOOv":n666;b1:0{~b0:11:0}:{~b1:"truev""falsev":b0}"perev":b1n1997:"vasilev"b0:"lol?v"}b100101101~1:0{~b0:11:0}:{~b1:"truev""falsev":b0}n1337:1338;"marav":"arev""merev":b0
 
 That’s pretty.
