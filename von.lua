@@ -1,4 +1,4 @@
---[[	vON 1.1.2
+--[[	vON 1.2.0
 
 	Copyright 2012-2013 Alexandru-Mihai Maftei
 					aka Vercas
@@ -47,7 +47,8 @@
 -----------------------------------------------------------------------------------------------------------------------------
 	
 	New in this version:
-		-	Added proper error in case of attempting to serialize an unsupported type.
+		-	Added better, shorter and faster way of handling strings, and a new format.
+			Old type of strings can still be deserialized.
 --]]
 
 local _deserialize, _serialize, _d_meta, _s_meta, d_findVariable, s_anyVariable
@@ -88,9 +89,14 @@ function d_findVariable(s, i, len, lastType)
 			lastType = "boolean"
 			typeRead = true
 
-		--	" means the start of a string.
-		elseif c == "\"" then
+		--	' means the start of a string.
+		elseif c == "'" then
 			lastType = "string"
+			typeRead = true
+
+		--	" means the start of a string prior to version 1.2.0.
+		elseif c == "\"" then
+			lastType = "oldstring"
 			typeRead = true
 
 		--	{ means the start of a table!
@@ -254,10 +260,8 @@ _deserialize = {
 	end,
 
 
---	Strings are very easy to parse and also very explicit.
---	" simply marks the type of a string.
---	Then it is parsed until an unescaped " is countered.
-	["string"] = function(s, i, len)
+--	Strings prior to 1.2.0
+	["oldstring"] = function(s, i, len)
 		local res, i, a = "", i or 1
 		--	Locals, locals, locals, locals
 
@@ -270,6 +274,27 @@ _deserialize = {
 					i = a + 1
 				else
 					return res .. sub(s, i, a - 2), a
+				end
+			else
+				error("vON: Old string definition started... Found no end.")
+			end
+		end
+	end,
+
+--	Strings after 1.2.0
+	["string"] = function(s, i, len)
+		local res, i, a = "", i or 1
+		--	Locals, locals, locals, locals
+
+		while true do
+			a = find(s, "\"", i, true)
+
+			if a then
+				if sub(s, a - 1, a - 1) == "\\" then
+					res = res .. sub(s, i, a - 2) .. "\""
+					i = a + 1
+				else
+					return res .. sub(s, i, a - 1), a
 				end
 			else
 				error("vON: String definition started... Found no end.")
@@ -365,7 +390,7 @@ _serialize = {
 
 --	I hope gsub is fast enough.
 	["string"] = function(data, mustInitiate, isNumeric, isKey, isLast)
-		return "\"" .. gsub(data, "\"", "\\\"") .. "v\""
+		return "'" .. gsub(data, "\"", "\\\"") .. "\""
 	end,
 
 
@@ -414,7 +439,10 @@ _s_meta = {
 	end
 }
 
-von = {}
+von = {
+	version = "1.2.0",
+	versionNumber = 1200000,	--	Reserving 3 digits per version component.
 
-von.deserialize = setmetatable(_deserialize,_d_meta)
-von.serialize = setmetatable(_serialize,_s_meta)
+	deserialize = setmetatable(_deserialize,_d_meta),
+	serialize = setmetatable(_serialize,_s_meta)
+}
