@@ -14,27 +14,27 @@ The license is specified in each code file. The terms of usage are pretty simple
 
 ## Specifications
 
-As in Lua, the main data structure is the table. But, unlike Lua tables, they are visibly separated in two parts: the numeric (array) component and the key-value pairs (dictionary) component.
-Tables start with *{* and end with *}*, and the two components are separated by a *~* (tilda) character, which may be absent if the table is a pure array.
-In case recursion-checking is enabled, tables which are found to recurse have a reference ID at their beginning. The ID is a number surrounded by *#* characters.
-**Examples**: Format: **{#id# … ~ … }** and data: **{#1#'lol”'mao”~'lol”:'mao”'recursion":$1}**, which would be **tab = {“lol”,”mao”,lol=”mao”}; tab.recursion = tab** in Lua.
+As in Lua, the main data structure is the table. But, unlike Lua tables, they are visibly separated in two parts: the numeric (array) component and the key-value pairs (dictionary) component.  
+Tables start with *{* and end with *}*, and the two components are separated by a *~* (tilda) character, which may be absent if the table is a pure array.  
+In case recursion-checking is enabled, tables which are found to recurse have a reference ID at their beginning. The ID is a number surrounded by *#* characters.  
+**Examples**: Format: **{#id# … ~ … }** and data: **{#1#'lol”'mao”~'lol”:'mao”'recursion":$1}**, which would be **tab = {“lol”,”mao”,lol=”mao”}; tab.recursion = tab** in Lua.  
 
-It must be mentioned that keys have no type restrictions. They can be booleans and even tables (or a Garry’s Mod-specific type).
+It must be mentioned that keys have no type restrictions. They can be booleans and even tables (or a Garry’s Mod-specific type).  
 
-The first table in the data, the chunk, has no initial and final characters (they are useless). This allows concatenating some vON code together and keeping it valid; sort of like using table.insert.
-**Example**: **#1#'lol”'mao”~'lol”:'mao”'recursion":$1;**, which means the same thing as the example above enclosed in *{ }*.
+The first table in the data, the chunk, has no initial and final characters (they are useless). This allows concatenating some vON code together and keeping it valid; sort of like using table.insert.  
+**Example**: **#1#'lol”'mao”~'lol”:'mao”'recursion":$1;**, which means the same thing as the example above enclosed in *{ }*.  
 
-Also, for the sake of parsing speed, some types (such as boolean and numbers) are prefixed with a character. If no valid prefix character is found, the last type will be automatically used.
-Inside tables, spaces, tabs and newlines are simply ignored when deserializing.
+Also, for the sake of parsing speed, some types (such as boolean and numbers) are prefixed with a character. If no valid prefix character is found, the last type will be automatically used.  
+Inside tables, spaces, tabs and newlines are simply ignored when deserializing.  
 
-Numbers are currently declared like this: **n…** (… represents the value in base 10). They either end in *;*, *}*, *:* or *~*. (At least one must be present).
-**Example**: **n1;2;3~4:4;** and **{n1;2;'intruder!”n4}**.
+Numbers are currently declared like this: **n…** (… represents the value in base 10). They either end in *;*, *}*, *:* or *~*. (At least one must be present).  
+**Example**: **n1;2;3~4:4;** and **{n1;2;'intruder!”n4}**.  
 
-Booleans are prefixed by **b** and are represented either by a **1** *(true)* or **0** *(false)*. They are represented by a single character so they don’t have a delimiter.
-Boolean sequences usually look like this: **b101101001**.
+Booleans are prefixed by **b** and are represented either by a **1** *(true)* or **0** *(false)*. They are represented by a single character so they don’t have a delimiter.  
+Boolean sequences usually look like this: **b101101001**.  
 
 Strings start with single quotes (*'*). Double quotes inside strings are escaped with a \. Only they are escaped now.
-The strings end in unescaped double quotes (*"*) - which are usually less common.
+The strings end in unescaped double quotes (*"*) - which are usually less common.  
 
 ## Example
 
@@ -58,7 +58,7 @@ The strings end in unescaped double quotes (*"*) - which are usually less common
 }
 ```
 
-… becomes …
+… becomes …  
 
     n1;-1337;-99.99;2;3;100;101;121;143;144;'ma\"ra"'are"'mere"{n500;600;700;800;900;9001~b1:0{~b0:11:0}:{~b1:'true"'false":b0}'pere":b1n1997:'vasile"b0:'lol?"}b100101101~1:0{~b0:11:0}:{~b1:'true"'false":b0}n1337:1338;'mara":'are"'mere":b0
 
