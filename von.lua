@@ -1,4 +1,4 @@
---[[	vON 1.3.0
+--[[	vON 1.3.1
 
 	Copyright 2012-2014 Alexandru-Mihai Maftei
 					aka Vercas
@@ -58,12 +58,7 @@
 -----------------------------------------------------------------------------------------------------------------------------
 	
 	New in this version:
-		-	Recursive table handling.
-		-	Fixed bug which would make floating-point numeric keys between 1 and the table's array length not be serialized
-			at all.
-		-	Merged Garry's Mod-specific and vanilla versions into one single file.
-		-	Fixed issue with version number. Minor version digit was misplaced in the number. Should have been 2 positions
-			to the right - on the 4th digit.
+		-	No longer writing the type indicating character for variables when not necessary.
 --]]
 
 
@@ -521,9 +516,9 @@ _serialize = {
 		end
 
 		if isKey or isLast then
-			return "$"..data
+			return data
 		else
-			return "$"..data..";"
+			return data..";"
 		end
 	end,
 
@@ -541,9 +536,9 @@ _serialize = {
 		end
 
 		if isKey or isLast then
-			return "n"..data
+			return data
 		else
-			return "n"..data..";"
+			return data..";"
 		end
 	end,
 
@@ -687,9 +682,9 @@ if gmod then	--	Luckily, a specific table named after the game is present in Gar
 			end
 
 			if isKey or isLast then
-				return "e"..data
+				return data
 			else
-				return "e"..data..";"
+				return data..";"
 			end
 		end,
 
@@ -705,9 +700,9 @@ if gmod then	--	Luckily, a specific table named after the game is present in Gar
 			end
 
 			if isKey or isLast then
-				return "v"..data.x..","..data.y..","..data.z
+				return data.x..","..data.y..","..data.z
 			else
-				return "v"..data.x..","..data.y..","..data.z..";"
+				return data.x..","..data.y..","..data.z..";"
 			end
 		end,
 
@@ -723,9 +718,9 @@ if gmod then	--	Luckily, a specific table named after the game is present in Gar
 			end
 
 			if isKey or isLast then
-				return "a"..data.p..","..data.y..","..data.r
+				return data.p..","..data.y..","..data.r
 			else
-				return "a"..data.p..","..data.y..","..data.r..";"
+				return data.p..","..data.y..","..data.r..";"
 			end
 		end,
 	}
@@ -807,8 +802,8 @@ _s_meta = {
 
 
 von = {
-	version = "1.3.0",
-	versionNumber = 1003000,	--	Reserving 3 digits per version component.
+	version = "1.3.1",
+	versionNumber = 1003001,	--	Reserving 3 digits per version component.
 
 	deserialize = setmetatable(_deserialize,_d_meta),
 	serialize = setmetatable(_serialize,_s_meta)
