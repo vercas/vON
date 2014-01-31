@@ -10,7 +10,7 @@ The main target of vON is flexibility and speed.
 
 ## License
 
-The license is specified in each code file. The terms of usage are pretty simple. Just read them.
+The license is specified in the code file. The terms of usage are pretty simple. Just read them.
 
 ## Specifications
 
@@ -33,7 +33,7 @@ Numbers are currently declared like this: **n…** (… represents the value in 
 Booleans are prefixed by **b** and are represented either by a **1** *(true)* or **0** *(false)*. They are represented by a single character so they don’t have a delimiter.  
 Boolean sequences usually look like this: **b101101001**.  
 
-Strings start with single quotes (*'*). Double quotes inside strings are escaped with a \. Only they are escaped now.
+Strings start with single quotes (*'*). Double quotes inside strings are escaped with a \\. Only they are escaped now.
 The strings end in unescaped double quotes (*"*) - which are usually less common.  
 
 ## Example
