@@ -1,4 +1,4 @@
---[[	vON 1.3.1
+--[[	vON 1.3.2
 
 	Copyright 2012-2014 Alexandru-Mihai Maftei
 					aka Vercas
@@ -58,7 +58,8 @@
 -----------------------------------------------------------------------------------------------------------------------------
 	
 	New in this version:
-		-	No longer writing the type indicating character for variables when not necessary.
+		-	Strings ending in back-slash ( \ ) are now serialized the old way, to prevent
+			really ugly issues.
 --]]
 
 
@@ -545,6 +546,10 @@ _serialize = {
 
 --	I hope gsub is fast enough.
 	["string"] = function(data, mustInitiate, isNumeric, isKey, isLast, first, jobstate)
+		if sub(data, #data, #data) == "\\" then	--	Hah, old strings fix this best.
+			return "\"" .. gsub(data, "\"", "\\\"") .. "v\""
+		end
+
 		return "'" .. gsub(data, "\"", "\\\"") .. "\""
 	end,
 
