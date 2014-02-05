@@ -1,4 +1,4 @@
---[[	vON 1.3.2
+--[[	vON 1.3.3
 
 	Copyright 2012-2014 Alexandru-Mihai Maftei
 					aka Vercas
@@ -58,8 +58,7 @@
 -----------------------------------------------------------------------------------------------------------------------------
 	
 	New in this version:
-		-	Strings ending in back-slash ( \ ) are now serialized the old way, to prevent
-			really ugly issues.
+		-	Forgot in-code version number...
 --]]
 
 
@@ -807,8 +806,8 @@ _s_meta = {
 
 
 von = {
-	version = "1.3.1",
-	versionNumber = 1003001,	--	Reserving 3 digits per version component.
+	version = "1.3.3",
+	versionNumber = 1003003,	--	Reserving 3 digits per version component.
 
 	deserialize = setmetatable(_deserialize,_d_meta),
 	serialize = setmetatable(_serialize,_s_meta)
