@@ -1,4 +1,4 @@
---[[	vON 1.3.3
+--[[	vON 1.3.4
 
 	Copyright 2012-2014 Alexandru-Mihai Maftei
 					aka Vercas
@@ -58,7 +58,7 @@
 -----------------------------------------------------------------------------------------------------------------------------
 	
 	New in this version:
-		-	Forgot in-code version number...
+		-	Fixed addition of extra entity types. I messed up really badly.
 --]]
 
 
@@ -729,18 +729,18 @@ if gmod then	--	Luckily, a specific table named after the game is present in Gar
 		end,
 	}
 
-	local extraEntityTypes = { "Vehicle", "Weapon", "NPC", "Player", "NextBot" }
-
-	for i = 1, #extraEntityTypes do
-		_serialize[extraEntityTypes[i]] = _serialize.Entity
-	end
-
 	for k, v in pairs(extra_serialize) do
 		_serialize[k] = v
 	end
 
 	for k, v in pairs(extra_deserialize) do
 		_deserialize[k] = v
+	end
+
+	local extraEntityTypes = { "Vehicle", "Weapon", "NPC", "Player", "NextBot" }
+
+	for i = 1, #extraEntityTypes do
+		_serialize[extraEntityTypes[i]] = _serialize.Entity
 	end
 end
 
@@ -806,8 +806,8 @@ _s_meta = {
 
 
 von = {
-	version = "1.3.3",
-	versionNumber = 1003003,	--	Reserving 3 digits per version component.
+	version = "1.3.4",
+	versionNumber = 1003004,	--	Reserving 3 digits per version component.
 
 	deserialize = setmetatable(_deserialize,_d_meta),
 	serialize = setmetatable(_serialize,_s_meta)
