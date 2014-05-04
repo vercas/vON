@@ -41,7 +41,9 @@
 		-	boolean
 		-	string
 		-	nil
-
+	Below are the type(s) by Crazycarpet
+		- function 
+		
 	The Garry's Mod-specific types supported in this release are:
 		-	Vector
 		-	Angle
@@ -509,16 +511,16 @@ _serialize = {
 		--	If a number hasn't been written before, add the type prefix.
 		if mustInitiate then
 			if isKey or isLast then
-				return "$"..data
+				return ("$[%i]"):format(data)
 			else
-				return "$"..data..";"
+				return ("$[%i];"):format(data)
 			end
 		end
 
 		if isKey or isLast then
 			return data
 		else
-			return data..";"
+			return ("[%i];"):format(data)
 		end
 	end,
 
@@ -529,16 +531,16 @@ _serialize = {
 		--	If a number hasn't been written before, add the type prefix.
 		if mustInitiate then
 			if isKey or isLast then
-				return "n"..data
+				return ("n[%i]"):format(data)
 			else
-				return "n"..data..";"
+				return ("n[%i];"):format(data)
 			end
 		end
 
 		if isKey or isLast then
 			return data
 		else
-			return data..";"
+			return ("[%i];"):format(data)
 		end
 	end,
 
@@ -570,7 +572,9 @@ _serialize = {
 			return "0"
 		end
 	end,
-
+	
+	["function"] = function(data, name)
+	end,
 
 --	Fastest.
 	["nil"] = function(data, mustInitiate, isNumeric, isKey, isLast, first, jobstate)
@@ -584,7 +588,7 @@ _serialize = {
 
 
 
-if gmod then	--	Luckily, a specific table named after the game is present in Garry's Mod.
+
 	local Entity = Entity
 
 
@@ -679,16 +683,16 @@ if gmod then	--	Luckily, a specific table named after the game is present in Gar
 
 			if mustInitiate then
 				if isKey or isLast then
-					return "e"..data
+					return ("e[%i]"):format(data)
 				else
-					return "e"..data..";"
+					return ("e[%i];"):format(data)
 				end
 			end
 
 			if isKey or isLast then
 				return data
 			else
-				return data..";"
+				return ("[%i];"):format(data)
 			end
 		end,
 
@@ -697,16 +701,16 @@ if gmod then	--	Luckily, a specific table named after the game is present in Gar
 		["Vector"] = function(data, mustInitiate, isNumeric, isKey, isLast, first, jobstate)
 			if mustInitiate then
 				if isKey or isLast then
-					return "v"..data.x..","..data.y..","..data.z
+					return ("v[%i],[%i],[%i]"):format(data.x,data.y,data.z)
 				else
-					return "v"..data.x..","..data.y..","..data.z..";"
+					return ("v[%i],[%i],[%i];"):format(data.x,data.y,data.z)
 				end
 			end
 
 			if isKey or isLast then
-				return data.x..","..data.y..","..data.z
+				return ("[%i],[%i],[%i]"):format(data.x,data.y,data.z)
 			else
-				return data.x..","..data.y..","..data.z..";"
+				return ("[%i],[%i],[%i];"):format(data.x,data.y,data.z)
 			end
 		end,
 
@@ -715,16 +719,16 @@ if gmod then	--	Luckily, a specific table named after the game is present in Gar
 		["Angle"] = function(data, mustInitiate, isNumeric, isKey, isLast, first, jobstate)
 			if mustInitiate then
 				if isKey or isLast then
-					return "a"..data.p..","..data.y..","..data.r
+					return ("a[%i],[%i],[%i]"):format(data.p,data.y,data.r)
 				else
-					return "a"..data.p..","..data.y..","..data.r..";"
+					return ("a[%i],[%i],[%i];"):format(data.p,data.y,data.r)
 				end
 			end
 
 			if isKey or isLast then
-				return data.p..","..data.y..","..data.r
+				return ("[%i],[%i],[%i]"):format(data.p,data.y,data.r)
 			else
-				return data.p..","..data.y..","..data.r..";"
+				return ("[%i],[%i],[%i];"):format(data.p,data.y,data.r)
 			end
 		end,
 	}
@@ -742,7 +746,7 @@ if gmod then	--	Luckily, a specific table named after the game is present in Gar
 	for i = 1, #extraEntityTypes do
 		_serialize[extraEntityTypes[i]] = _serialize.Entity
 	end
-end
+
 
 
 
