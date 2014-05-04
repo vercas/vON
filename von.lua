@@ -41,9 +41,7 @@
 		-	boolean
 		-	string
 		-	nil
-	Below are the type(s) by Crazycarpet
-		- function 
-		
+
 	The Garry's Mod-specific types supported in this release are:
 		-	Vector
 		-	Angle
